@@ -1,11 +1,10 @@
-from django.shortcuts import render
-
-# Create your views here.
-
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer
+from .models import UsuarioP3
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -34,3 +33,30 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
+
+
+def login(request):
+    return render(request, 'login.html')
+
+def registro(request):
+    usuariop=UsuarioP3.objects.all()
+    datos = {'usuariosp': usuariop}
+    return render(request, 'registro.html', datos)
+
+def validarUsuarioP(request):
+    try:
+        v_name=request.POST.get('name')
+        v_password=request.POST.get('password')
+
+        usuariop=UsuarioP3.objects.get(password=v_password, nombre=v_name)
+        
+        
+            #crear la sesion y redireccionar
+        request.session['nombre']=usuariop.nombre
+        return redirect('/verM')
+        
+    except:
+        return redirect('/errorlogin') 
+
+def errorlogin(request):
+    return render(request, 'errorlogin.html')        
