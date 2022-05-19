@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'musicpro1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'musicprouser',
+        'NAME': 'musicprouser1',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
